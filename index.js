@@ -5,13 +5,12 @@ class Tabler {
         this.terminalHeight = process.stdout.rows;
     }
 
-    row(contents, maxWidth) {
+    row(contents, widths) {
         let row = '';
         const cols = contents.length;
-        let width = maxWidth || this.defaultMaxWidth;
         for (const i in contents) {
             let col = contents[i];
-            let spaces = width - col.length;
+            let spaces = (widths[i] + 2) - col.length;
             if (spaces > 0) {
                 row += col + ' '.repeat(spaces);
             } else {
@@ -24,20 +23,38 @@ class Tabler {
     tableByRow(contents) {
         let table = '';
 
-        const lengths = this.getLongestLengthPerColumn(contents);
+        let lengths = this.getLongestLengthPerColumn(contents);
 
         let cols = 0;
         for (let i in contents) {
             if (contents[i].length > cols) cols = contents[i].length;
         }
 
-        if (width * cols > process.stdout.columns) table += 'Increase terminal width to view table\n'
+        // check if terminal is too small here pls {
+
+        // }
+
+        
 
         for (let i in contents) {
-            table += this.row(contents[i], width) + '\n';
+            table += this.row(contents[i], lengths) + '\n';
         }
 
         return table;
+    }
+
+    colsToRows(cols) {
+        let rows = [];
+        for (let i in cols) {
+            let column = cols[i];
+            for (let j in column) {
+                if (!rows[j]) rows[j] = [];
+                let content = column[j];
+                rows[j][i] = content;
+            }
+        }
+
+        return rows;
     }
 
     getLongestLengthPerColumn(contents) {
