@@ -24,7 +24,14 @@ class Tabler {
     tableByRow(contents) {
         let table = '';
 
-        let width = this.getLongestLength(contents) + 2;
+        const lengths = this.getLongestLengthPerColumn(contents);
+
+        let cols = 0;
+        for (let i in contents) {
+            if (contents[i].length > cols) cols = contents[i].length;
+        }
+
+        if (width * cols > process.stdout.columns) table += 'Increase terminal width to view table\n'
 
         for (let i in contents) {
             table += this.row(contents[i], width) + '\n';
@@ -33,21 +40,17 @@ class Tabler {
         return table;
     }
 
-    tableByColumn(contents) {
-
-    }
-
-    getLongestLength(props) {
-        let longest = 0;
-
-        for (let i in props) {
-            for (let j in props[i]) {
-                if (props[i][j].length > longest) {
-                    longest = props[i][j].length;
-                }
+    getLongestLengthPerColumn(contents) {
+        let lengths = [];
+        for (let i in contents) {
+            for (let j in contents[i]) {
+               lengths[j] = lengths[j] ? lengths[j] : contents[i][j].length;
+               if (lengths[j] < contents[i][j].length) {
+                   lengths[j] = contents[i][j].length;
+               }
             }
         }
-        return longest;
+        return lengths;
     }
 }
 
