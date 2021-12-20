@@ -21,10 +21,10 @@ class Tabler {
         return row;
     }
 
-    table(contents) {
+    tableByRow(contents) {
         let table = '';
 
-        let width = this.getLongestLength(contents) + 1;
+        let width = this.getLongestLength(contents) + 2;
 
         for (let i in contents) {
             table += this.row(contents[i], width) + '\n';
@@ -33,21 +33,20 @@ class Tabler {
         return table;
     }
 
+    tableByColumn(contents) {
+
+    }
+
     getLongestLength(props) {
         let longest = 0;
 
         for (let i in props) {
             for (let j in props[i]) {
                 if (props[i][j].length > longest) {
-                    console.log(props[i][j].length)
-                    longest = j.length;
-                    console.log('longest:', longest);
+                    longest = props[i][j].length;
                 }
             }
         }
-
-        console.log(longest);
-
         return longest;
     }
 }
