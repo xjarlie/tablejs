@@ -41,6 +41,7 @@ class Tabler {
                 if (props[i][j].length > longest) {
                     console.log(props[i][j].length)
                     longest = j.length;
+                    console.log('longest:', longest);
                 }
             }
         }
